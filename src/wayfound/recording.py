@@ -10,12 +10,11 @@ class Recording:
     WAYFOUND_RECORDINGS_URL = WAYFOUND_HOST + "/api/v1/recordings/active"
     WAYFOUND_RECORDING_COMPLETED_URL = WAYFOUND_HOST + "/api/v1/recordings/completed"
 
-    def __init__(self, wayfound_api_key=None, agent_id=None, recording_id=None, use_published=False, visitor_id=None):
+    def __init__(self, wayfound_api_key=None, agent_id=None, recording_id=None, visitor_id=None):
         super().__init__()
 
         self.wayfound_api_key = wayfound_api_key or os.getenv("WAYFOUND_API_KEY")
         self.agent_id = agent_id or os.getenv("WAYFOUND_AGENT_ID")
-        self.use_published = use_published
         self.recording_id = recording_id
         self.visitor_id = visitor_id
         
@@ -33,7 +32,6 @@ class Recording:
             "agentId": self.agent_id,
             "recordingId": self.recording_id,
             "messages": messages,
-            "usePublished": self.use_published,
         }
 
         if self.visitor_id:
@@ -61,7 +59,6 @@ class Recording:
             "agentId": self.agent_id,
             "recordingId": self.recording_id,
             "messages": messages,
-            "usePublished": self.use_published,
         }
 
         if visitor_id:
@@ -90,10 +87,7 @@ class Recording:
             "messages": messages,
             "firstMessageAt": first_message_at,
             "lastMessageAt": last_message_at,
-            "usePublished": self.use_published,
         }
-
-        print(f"{recording_url}")
 
         if visitor_id:
             payload["visitorId"] = visitor_id
