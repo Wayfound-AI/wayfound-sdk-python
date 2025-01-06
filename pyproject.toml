@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling","requests"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0","requests"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "wayfound"
