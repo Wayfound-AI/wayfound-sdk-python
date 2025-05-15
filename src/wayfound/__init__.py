@@ -1,3 +1,3 @@
-from .recording import Recording
+from .session import Session
 
-__all__ = ['Recording']
+__all__ = ['Session']
