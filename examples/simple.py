@@ -1,7 +1,7 @@
 from wayfound import Session
 
-wayfound_api_key = "<YOUR_WAYFOUND_API_KEY>"
-wayfound_agent_id = "<YOUR_WAYFOUND_AGENT_ID>"
+wayfound_api_key = "4401f328-b4c2-4f7e-8feb-c85bb8a6f4e3"
+wayfound_agent_id = "fb2edb4a-fc1b-4173-ad09-418803041f35"
 
 wayfound_session = Session(wayfound_api_key=wayfound_api_key, agent_id=wayfound_agent_id)
 
@@ -31,8 +31,29 @@ formatted_messages.append({
     }
   })
 
+print ("Submitting session data to Wayfound...")
 result = wayfound_session.complete_session(messages=formatted_messages, is_async=False)
+
 print(f"Status Code: {result.status_code}")
 print(f"Response Headers: {dict(result.headers)}")
 print(f"Response Body: {result.text}")
 print(f"Response JSON: {result.json() if result.headers.get('content-type', '').startswith('application/json') else 'Not JSON'}")
+
+# Find and print compliance violations
+response_data = result.json()
+session = response_data[0]  # Get first session from the array
+
+print("\n--- Guideline Violations ---")
+violations = [item for item in session['compliance'] if item['result']['compliant'] == False]
+
+if violations:
+    for i, violation in enumerate(violations, 1):
+        print(f"Violation {i}:")
+        print(f"  Guideline: {violation['guideline']}")
+        print(f"  Reason: {violation['result']['reason']}")
+        print(f"  Message: {violation['message']['content']}")
+        print(f"  Priority: {violation['guidelinePriority']}")
+        print(f"  Source: {violation['guidelineSource']}")
+        print()
+else:
+    print("No guideline violations found!")
