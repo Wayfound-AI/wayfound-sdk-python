@@ -11,24 +11,29 @@ class Session:
     def __init__(self, 
                  wayfound_api_key=None, 
                  agent_id=None, 
+                 application_id=None,
                  visitor_id=None, 
                  visitor_display_name=None, 
                  account_id=None, 
-                 account_display_name=None):
+                 account_display_name=None,
+                 is_async=True,
+                 ):
         super().__init__()
 
         self.wayfound_api_key = wayfound_api_key or os.getenv("WAYFOUND_API_KEY")
         self.agent_id = agent_id or os.getenv("WAYFOUND_AGENT_ID")
+        self.application_id = application_id
         self.visitor_id = visitor_id
         self.visitor_display_name = visitor_display_name
         self.account_id = account_id
         self.account_display_name = account_display_name
+        self.is_async = is_async
         
         self.headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.wayfound_api_key}",
             "X-SDK-Language": "Python",
-            "X-SDK-Version": "2.0.2"
+            "X-SDK-Version": "2.0.3"
         }
 
     def complete_session(self, messages=None):
@@ -52,6 +57,11 @@ class Session:
 
         if self.account_display_name:
             payload["accountDisplayName"] = self.account_display_name
+
+        if self.application_id:
+            payload["applicationId"] = self.application_id
+
+        payload["async"] = self.is_async
             
         try:
             response = requests.post(recording_url, headers=self.headers, data=json.dumps(payload))
