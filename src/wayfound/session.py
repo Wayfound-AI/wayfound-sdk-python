@@ -16,7 +16,6 @@ class Session:
                  visitor_display_name=None, 
                  account_id=None, 
                  account_display_name=None,
-                 is_async=True,
                  ):
         super().__init__()
 
@@ -27,16 +26,15 @@ class Session:
         self.visitor_display_name = visitor_display_name
         self.account_id = account_id
         self.account_display_name = account_display_name
-        self.is_async = is_async
         
         self.headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.wayfound_api_key}",
             "X-SDK-Language": "Python",
-            "X-SDK-Version": "2.0.3"
+            "X-SDK-Version": "2.0.4"
         }
 
-    def complete_session(self, messages=None):
+    def complete_session(self, messages=None, is_async=True,):
         if messages is None:
             messages = []
 
@@ -44,6 +42,7 @@ class Session:
         payload = {
             "agentId": self.agent_id,
             "messages": messages,
+            "async": is_async,
         }
 
         if self.visitor_id:
@@ -60,8 +59,6 @@ class Session:
 
         if self.application_id:
             payload["applicationId"] = self.application_id
-
-        payload["async"] = self.is_async
             
         try:
             response = requests.post(recording_url, headers=self.headers, data=json.dumps(payload))
