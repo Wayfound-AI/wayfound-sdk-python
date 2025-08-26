@@ -1,7 +1,7 @@
 from wayfound import Session
 
-wayfound_api_key = "4401f328-b4c2-4f7e-8feb-c85bb8a6f4e3"
-wayfound_agent_id = "fb2edb4a-fc1b-4173-ad09-418803041f35"
+wayfound_api_key = "<YOUR_WAYFOUND_API_KEY>"
+wayfound_agent_id = "<YOUR_WAYFOUND_AGENT_ID>"
 
 wayfound_session = Session(wayfound_api_key=wayfound_api_key, agent_id=wayfound_agent_id)
 
