@@ -37,6 +37,9 @@ class Session:
         }
 
     def complete_session(self, messages=None, is_async=True,):
+        if (self.session_id is not None):
+            raise Exception("Session already completed. Use append_to_session to add more messages.")
+        
         if messages is None:
             messages = []
 
@@ -69,6 +72,8 @@ class Session:
                 raise Exception(f"Error completing session request: {response.status_code}")
             
             parsed_response = response.json()
+            self.session_id = parsed_response["id"]
+
             return parsed_response
         except requests.exceptions.RequestException as e:
             raise Exception(f"Error completing session request: {e}")
