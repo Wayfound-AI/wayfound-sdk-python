@@ -34,7 +34,7 @@ class Session:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.wayfound_api_key}",
             "X-SDK-Language": "Python",
-            "X-SDK-Version": "2.1.0"
+            "X-SDK-Version": "2.2.0"
         }
 
     def complete_session(self, messages=None, is_async=True,):
