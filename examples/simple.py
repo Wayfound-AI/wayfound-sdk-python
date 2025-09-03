@@ -24,7 +24,7 @@ formatted_messages.append({
   })
 
 formatted_messages.append({
-    "timestamp": "2025-08-07T10:00:04Z",
+    "timestamp": "2025-08-07T10:00:08Z",
     "event_type": "assistant_message",
     "attributes": {
       "content": "The status of Project Alpha is currently on track with all milestones met so far."
