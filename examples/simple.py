@@ -34,17 +34,11 @@ formatted_messages.append({
 print ("Submitting session data to Wayfound...")
 result = wayfound_session.complete_session(messages=formatted_messages, is_async=False)
 
-print(f"Status Code: {result.status_code}")
-print(f"Response Headers: {dict(result.headers)}")
-print(f"Response Body: {result.text}")
-print(f"Response JSON: {result.json() if result.headers.get('content-type', '').startswith('application/json') else 'Not JSON'}")
-
 # Find and print compliance violations
-response_data = result.json()
-session = response_data[0]  # Get first session from the array
-
 print("\n--- Guideline Violations ---")
-violations = [item for item in session['compliance'] if item['result']['compliant'] == False]
+violations = []
+if 'compliance' in result:
+    violations = [item for item in result['compliance'] if item['result']['compliant'] == False]
 
 if violations:
     for i, violation in enumerate(violations, 1):
