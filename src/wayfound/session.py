@@ -7,6 +7,7 @@ import json
 class Session:
     WAYFOUND_HOST = "https://app.wayfound.ai"
     WAYFOUND_RECORDING_COMPLETED_URL = WAYFOUND_HOST + "/api/v2/sessions/completed"
+    WAYFOUND_APPEND_TO_SESSION_URL = WAYFOUND_HOST + "/api/v2/sessions"
 
     def __init__(self,
                  session_id=None,
@@ -77,3 +78,27 @@ class Session:
             return parsed_response
         except requests.exceptions.RequestException as e:
             raise Exception(f"Error completing session request: {e}")
+
+    def append_to_session(self, messages, is_async=True):
+        if self.session_id is None:
+            raise Exception("No session_id available. Complete a session first before appending.")
+        
+        if messages is None:
+            messages = []
+
+        append_url = f"{self.WAYFOUND_APPEND_TO_SESSION_URL}/{self.session_id}"
+        payload = {
+            "messages": messages,
+            "async": is_async,
+        }
+            
+        try:
+            response = requests.post(append_url, headers=self.headers, data=json.dumps(payload))
+            if response.status_code != 200:
+                print(f"The request failed with status code: {response.status_code} and response: {response.text}")
+                raise Exception(f"Error appending to session: {response.status_code}")
+            
+            parsed_response = response.json()
+            return parsed_response
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"Error appending to session: {e}")
