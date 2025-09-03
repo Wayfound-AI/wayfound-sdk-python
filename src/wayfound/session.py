@@ -93,7 +93,7 @@ class Session:
         }
             
         try:
-            response = requests.post(append_url, headers=self.headers, data=json.dumps(payload))
+            response = requests.put(append_url, headers=self.headers, data=json.dumps(payload))
             if response.status_code != 200:
                 print(f"The request failed with status code: {response.status_code} and response: {response.text}")
                 raise Exception(f"Error appending to session: {response.status_code}")
