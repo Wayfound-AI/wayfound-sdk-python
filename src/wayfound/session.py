@@ -7,7 +7,7 @@ import warnings
 
 class Session:
     WAYFOUND_HOST = "https://app.wayfound.ai"
-    WAYFOUND_RECORDING_COMPLETED_URL = WAYFOUND_HOST + "/api/v2/sessions/completed"
+    WAYFOUND_SESSION_CREATE_URL = WAYFOUND_HOST + "/api/v2/sessions"
     WAYFOUND_APPEND_TO_SESSION_URL = WAYFOUND_HOST + "/api/v2/sessions"
 
     def __init__(self,
@@ -35,7 +35,7 @@ class Session:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.wayfound_api_key}",
             "X-SDK-Language": "Python",
-            "X-SDK-Version": "2.4.0"
+            "X-SDK-Version": "2.5.0"
         }
 
     def create(self, messages=None, is_async=True):
@@ -45,7 +45,7 @@ class Session:
         if messages is None:
             messages = []
 
-        recording_url = self.WAYFOUND_RECORDING_COMPLETED_URL
+        recording_url = self.WAYFOUND_SESSION_CREATE_URL
         payload = {
             "agentId": self.agent_id,
             "messages": messages,
