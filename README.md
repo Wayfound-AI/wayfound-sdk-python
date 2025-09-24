@@ -68,7 +68,7 @@ messages = [
 ]
 
 # Submit the session for analysis
-result = session.complete_session(messages=messages, is_async=False)
+result = session.create(messages=messages, is_async=False)
 
 # Check for compliance violations
 if 'compliance' in result:
@@ -165,7 +165,7 @@ Each message should follow this structure:
 ```python
 # Start a new session
 session = Session(wayfound_api_key="key", agent_id="agent")
-result = session.complete_session(initial_messages)
+result = session.create(initial_messages)
 
 # Later, append more messages to the same session
 additional_messages = [
