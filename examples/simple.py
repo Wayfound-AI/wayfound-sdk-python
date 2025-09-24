@@ -32,7 +32,7 @@ formatted_messages.append({
   })
 
 print ("Submitting session data to Wayfound...")
-result = wayfound_session.complete_session(messages=formatted_messages, is_async=False)
+result = wayfound_session.create(messages=formatted_messages, is_async=False)
 
 # Find and print compliance violations
 print("\n--- Guideline Violations ---")
