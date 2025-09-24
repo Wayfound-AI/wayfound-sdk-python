@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import warnings
 
 # https://packaging.python.org/en/latest/tutorials/packaging-projects/
 
@@ -34,13 +35,13 @@ class Session:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.wayfound_api_key}",
             "X-SDK-Language": "Python",
-            "X-SDK-Version": "2.3.0"
+            "X-SDK-Version": "2.4.0"
         }
 
-    def complete_session(self, messages=None, is_async=True,):
+    def create(self, messages=None, is_async=True):
         if (self.session_id is not None):
-            raise Exception("Session already completed. Use append_to_session to add more messages.")
-        
+            raise Exception("Session already created. Use append_to_session to add more messages.")
+
         if messages is None:
             messages = []
 
@@ -65,19 +66,27 @@ class Session:
 
         if self.application_id:
             payload["applicationId"] = self.application_id
-            
+
         try:
             response = requests.post(recording_url, headers=self.headers, data=json.dumps(payload))
             if response.status_code != 200:
                 print(f"The request failed with status code: {response.status_code} and response: {response.text}")
-                raise Exception(f"Error completing session request: {response.status_code}")
-            
+                raise Exception(f"Error creating session: {response.status_code}")
+
             parsed_response = response.json()
             self.session_id = parsed_response["id"]
 
             return parsed_response
         except requests.exceptions.RequestException as e:
-            raise Exception(f"Error completing session request: {e}")
+            raise Exception(f"Error creating session: {e}")
+
+    def complete_session(self, messages=None, is_async=True,):
+        warnings.warn(
+            "complete_session is deprecated and will be removed in a future version. Use create() instead.",
+            DeprecationWarning,
+            stacklevel=2
+        )
+        return self.create(messages, is_async)
 
     def append_to_session(self, messages, is_async=True):
         if self.session_id is None:
