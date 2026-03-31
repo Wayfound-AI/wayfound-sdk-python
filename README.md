@@ -114,12 +114,13 @@ session = Session()  # Automatically uses environment variables
 | `visitor_display_name` | `str` | Human-readable visitor name         | No       |
 | `account_id`           | `str` | Account identifier                  | No       |
 | `account_display_name` | `str` | Human-readable account name         | No       |
+| `metadata`             | `str` or `dict` | Optional metadata for the session | No       |
 
 \*Required unless set as environment variables
 
 #### Methods
 
-##### `complete_session(messages=None, is_async=True)`
+##### `create(messages=None, is_async=True)`
 
 Submits a complete conversation session for analysis.
 
@@ -212,4 +213,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🏷️ Version
 
-Current version: **2.3.0**
+Current version: **2.6.0**

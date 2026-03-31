@@ -19,6 +19,7 @@ class Session:
                  visitor_display_name=None, 
                  account_id=None, 
                  account_display_name=None,
+                 metadata=None,
                  ):
         super().__init__()
 
@@ -30,12 +31,13 @@ class Session:
         self.visitor_display_name = visitor_display_name
         self.account_id = account_id
         self.account_display_name = account_display_name
-        
+        self.metadata = metadata
+
         self.headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.wayfound_api_key}",
             "X-SDK-Language": "Python",
-            "X-SDK-Version": "2.5.0"
+            "X-SDK-Version": "2.6.0"
         }
 
     def create(self, messages=None, is_async=True):
@@ -66,6 +68,9 @@ class Session:
 
         if self.application_id:
             payload["applicationId"] = self.application_id
+
+        if self.metadata:
+            payload["metadata"] = self.metadata if isinstance(self.metadata, str) else json.dumps(self.metadata)
 
         try:
             response = requests.post(recording_url, headers=self.headers, data=json.dumps(payload))
